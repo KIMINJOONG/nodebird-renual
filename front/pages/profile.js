@@ -1,8 +1,17 @@
 // @ts-nocheck
 import React from "react";
+import Head from "next/head";
+import AppLayout from "../components/AppLayout";
 
 const Profile = () => {
-  return <div>내 프로필</div>;
+    return (
+        <>
+            <Head>
+                <title>내 프로필 | NodeBird</title>
+            </Head>
+            <AppLayout>내프로필 페이지</AppLayout>
+        </>
+    );
 };
 
 export default Profile;
