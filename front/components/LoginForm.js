@@ -3,6 +3,11 @@ import { Form, Input, Button } from "antd";
 import { useState } from "react";
 import Link from "next/link";
 import { useCallback } from "react";
+import styled from "styled-components";
+
+const ButtonWrapper = styled.div`
+  margin-top: 10px;
+`;
 
 const LoginForm = () => {
   const [id, setId] = useState("");
@@ -27,17 +32,17 @@ const LoginForm = () => {
         <label htmlFor="user-id">비밀번호</label>
         <br />
         <Input
-          name="user-id"
+          name="user-password"
           type="password"
-          value={id}
+          value={password}
           onChange={onChangePassword}
           required
         />
       </div>
-      <div>
+      <ButtonWrapper>
         <Button type="primary" htmlType="submit" loading={false}>로그인</Button>
         <Link href="/signup"><a><Button>회원가입</Button></a></Link>
-      </div>
+      </ButtonWrapper>
     </Form>
   );
 };
