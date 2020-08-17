@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Form, Input, Button } from "antd";
 import React, { useCallback, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
