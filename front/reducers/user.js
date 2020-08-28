@@ -1,86 +1,71 @@
 const initialState = {
-    isLoggedIn: false,
-    user: null,
-    signUpData: {},
-    loginData: {},
-};
-
-export const loginAction = (data) => {
-    return (dispatch, getState) => {
-        const state = getState();
-
-        dispatch(loginRequestAction());
-        axios
-            .post("/api/login")
-            .then(() => {
-                dispatch(loginSuccessAction());
-            })
-            .catch(() => {
-                dispatch(loginFailureAction());
-            });
-    };
+  isLoggingIn: false, // 로그인 시도중
+  isLoggedIn: false,
+  isLoggingOut: false, // 로그아웃 시도중
+  me: null,
+  signUpData: {},
+  loginData: {},
 };
 
 export const loginRequestAction = (data) => {
-    return {
-        type: "LOG_IN_REQUEST",
-        data,
-    };
-};
-
-export const loginSuccessAction = (data) => {
-    return {
-        type: "LOG_IN_SUCCESS",
-        data,
-    };
-};
-
-export const loginFailureAction = (data) => {
-    return {
-        type: "LOG_IN_FAILURE",
-        data,
-    };
+  return {
+    type: "LOG_IN_REQUEST",
+    data,
+  };
 };
 
 export const logoutRequestAction = (data) => {
-    return {
-        type: "LOG_OUT_REQUEST",
-        data,
-    };
-};
-
-export const logoutSuccessAction = (data) => {
-    return {
-        type: "LOG_OUT_SUCCESS",
-        data,
-    };
-};
-
-export const logoutFailureAction = (data) => {
-    return {
-        type: "LOG_OUT_FAILURE",
-        data,
-    };
+  return {
+    type: "LOG_OUT_REQUEST",
+    data,
+  };
 };
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case "LOG_IN":
-            return {
-                ...state,
-                isLoggedIn: true,
-                user: action.data,
-            };
-
-        case "LOG_OUT":
-            return {
-                ...state,
-                isLoggedIn: false,
-                user: null,
-            };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case "LOG_IN_REQUEST":
+      return {
+        ...state,
+        isLoggingIn: true,
+        me: action.data,
+      };
+    case "LOG_IN_SUCCESS":
+      return {
+        ...state,
+        isLoggingIn: false,
+        isLoggedIn: true,
+        me: { ...action.data, nickname: "zerocho" },
+      };
+    case "LOG_IN_FAILURE":
+      return {
+        ...state,
+        isLoggingIn: false,
+        isLoggedIn: true,
+        me: action.data,
+      };
+    case "LOG_OUT_REQUEST":
+      return {
+        ...state,
+        isLoggingOut: true,
+        me: null,
+      };
+    case "LOG_OUT_SUCCESS":
+      return {
+        ...state,
+        isLoggingOut: false,
+        isLoggedIn: false,
+        me: null,
+      };
+    case "LOG_OUT_FAILURE":
+      return {
+        ...state,
+        isLoggedIn: false,
+        isLoggingOut: false,
+        me: null,
+      };
+    default:
+      return state;
+  }
 };
 
 export default reducer;
