@@ -1,19 +1,21 @@
 // @ts-nocheck
-import React from "react";
+import React, { useState, useCallback } from "react";
 import Head from "next/head";
 import AppLayout from "../components/AppLayout";
-import { useCallback } from "react";
 import { Form, Input, Checkbox, Button } from "antd";
 import useInput from "../hooks/useInput";
-import { useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { SIGN_UP_REQUEST } from "../reducers/user.ts";
 
 const ErrorMessage = styled.div`
     color: red;
 `;
 
 const Signup = () => {
-  const [id, onChangeId] = useInput("");
+  const dispatch = useDispatch();
+  const { signUpLoading } = useSelector((state) => state.user);
+  const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
   const [password, onChangePassword] = useInput("");
 
@@ -38,7 +40,12 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-  }, [password, passwordCheck, term]);
+
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: { email, password, nickname },
+    });
+  }, [email, password, passwordCheck, term]);
   return (
     <>
       <Head>
@@ -49,7 +56,12 @@ const Signup = () => {
           <div>
             <label htmlFor="user-id">아이디</label>
             <br />
-            <Input name="user-id" value={id} required onChange={onChangeId} />
+            <Input
+              name="user-id"
+              value={email}
+              required
+              onChange={onChangeEmail}
+            />
           </div>
           <div>
             <label htmlFor="user-nickname">닉네임</label>
@@ -93,7 +105,13 @@ const Signup = () => {
             {termError && <ErrorMessage>약관에 동의하셔야합니다.</ErrorMessage>}
           </div>
           <div style={{ marginTop: 10 }}>
-            <Button type="primary" htmlType="submit">가입하기</Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={signUpLoading}
+            >
+              가입하기
+            </Button>
           </div>
         </Form>
       </AppLayout>
