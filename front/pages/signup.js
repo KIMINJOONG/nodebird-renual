@@ -1,12 +1,12 @@
 // @ts-nocheck
 import React, { useState, useCallback } from "react";
 import Head from "next/head";
-import AppLayout from "../components/AppLayout";
 import { Form, Input, Checkbox, Button } from "antd";
-import useInput from "../hooks/useInput";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { SIGN_UP_REQUEST } from "../reducers/user.ts";
+import useInput from "../hooks/useInput";
+import AppLayout from "../components/AppLayout";
+import { SIGN_UP_REQUEST } from "../reducers/user";
 
 const ErrorMessage = styled.div`
     color: red;

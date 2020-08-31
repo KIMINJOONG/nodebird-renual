@@ -24,7 +24,6 @@ function* logIn(action) {
       data: action.data,
     });
   } catch (err) {
-    console.log("에러 : ", err);
     yield put({
       type: LOG_IN_FAILURE,
       error: err.response.data,

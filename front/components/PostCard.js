@@ -38,11 +38,13 @@ const PostCard = ({ post }) => {
         actions={[
           <RetweetOutlined key="retweet" />,
           liked
-            ? <HeartTwoTone
-              twoToneColor="#eb2f96"
-              key="heart"
-              onClick={onToggleLike}
-            />
+            ? (
+              <HeartTwoTone
+                twoToneColor="#eb2f96"
+                key="heart"
+                onClick={onToggleLike}
+              />
+            )
             : <HeartOutlined key="heart" onClick={onToggleLike} />,
           <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover

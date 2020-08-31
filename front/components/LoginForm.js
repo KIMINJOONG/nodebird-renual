@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
-import { useCallback } from "react";
+
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 import useInput from "../hooks/useInput";
-import { useDispatch } from "react-redux";
 import { loginRequestAction } from "../reducers/user";
-import { useSelector } from "react-redux";
 
 const ButtonWrapper = styled.div`
     margin-top: 10px;
@@ -19,12 +18,12 @@ const FormWrapper = styled(Form)`
 const LoginForm = () => {
   const dispatch = useDispatch();
   const { logInLoading } = useSelector((state) => state.user);
-  const [eamil, onChangeEmail] = useInput("");
+  const [email, onChangeEmail] = useInput("");
   const [password, onChangePassword] = useInput("");
 
   const onSubmitForm = useCallback(() => {
-    dispatch(loginRequestAction({ id, password }));
-  }, [eamil, password]);
+    dispatch(loginRequestAction({ email, password }));
+  }, [email, password]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>
@@ -33,7 +32,7 @@ const LoginForm = () => {
         <br />
         <Input
           name="user-id"
-          value={eamil}
+          value={email}
           onChange={onChangeEmail}
           required
         />
