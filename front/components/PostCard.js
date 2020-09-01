@@ -12,14 +12,19 @@ import {
 import styled from "styled-components";
 import Link from "next/link";
 
+import { useDispatch, useSelector } from "react-redux";
 import CommentForm from "./CommentForm";
 import PostImages from "./PostImages";
+import { REMOVE_POST_REQUEST } from "../reducers/post";
+import PostCardContent from "./PostCardContent";
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
 const PostCard = ({ post }) => {
+  const dispatch = useDispatch();
+  const { removePostLoading } = useSelector((state) => state.post);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const [liked, setLiked] = useState(false);
 
@@ -29,6 +34,13 @@ const PostCard = ({ post }) => {
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
+  }, []);
+
+  const onRemovePost = useCallback(() => {
+    dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
   }, []);
 
   return (
@@ -53,7 +65,13 @@ const PostCard = ({ post }) => {
               <Button.Group>
                 <Button>신고</Button>
                 <Button>수정</Button>
-                <Button danger>삭제</Button>
+                <Button
+                  danger
+                  onClick={onRemovePost}
+                  loading={removePostLoading}
+                >
+                  삭제
+                </Button>
               </Button.Group>
             )}
           >
@@ -64,6 +82,7 @@ const PostCard = ({ post }) => {
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
+          description={<PostCardContent postData={post.content} />}
         />
       </Card>
       {commentFormOpened && (
